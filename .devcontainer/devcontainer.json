@@ -5,7 +5,6 @@
     "build": {
         "dockerfile": "Dockerfile",
         "args": {
-            "GH_TOKEN": "${env:GH_TOKEN}",
             "USERNAME": "prot",
             "USER_UID": "1001",
             "USER_GID": "1001"
@@ -64,7 +63,6 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-vsliveshare.vsliveshare",
                 "denoland.vscode-deno"
             ],
             "settings": {
