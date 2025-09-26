@@ -77,12 +77,6 @@
                     // }
                 },
 
-                // hide dot folders
-                "files.exclude": {
-                    "**/.devcontainer": true,
-                    "**/.github": true,
-                    "**/.vscode": true
-                },
                 // configure the innitial default theme
                 "workbench.colorTheme": "Visual Studio Dark",
                 // enable to use deno as the typescript language server, see "https://docs.deno.com/runtime/getting_started/installation/"

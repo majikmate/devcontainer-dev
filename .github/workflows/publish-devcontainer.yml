@@ -86,20 +86,12 @@ jobs:
             cat /etc/default/locale
             echo "--- Go version ---"
             go version
-            echo "--- Java version ---"
-            java --version
             echo "--- Node.js version ---"
             node --version
-            echo "--- Python version ---"
-            python --version
             echo "--- gh version ---"
             gh --version
-            echo "--- Docker version ---"
-            docker --version
             echo "--- Deno version ---"
             deno --version
-            echo "--- Conda version ---"
-            conda --version
             echo "--- Git ---"
             git config --system --list
 

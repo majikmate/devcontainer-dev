@@ -9,4 +9,9 @@ ARG USER_GID=1001
 
 ENV GH_TOKEN=${GH_TOKEN}
 
-RUN ./adduser.sh ${USERNAME} ${USER_UID} ${USER_GID}
+# Copy the adduser script and make it executable
+COPY adduser.sh /tmp/adduser.sh
+RUN chmod +x /tmp/adduser.sh
+
+# Run the script to create/update the user
+RUN /tmp/adduser.sh ${USERNAME} ${USER_UID} ${USER_GID}
