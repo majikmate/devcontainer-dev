@@ -1,114 +1,120 @@
-# Classroom Codespace Image
+# DevContainer Development Environment
 
-A multi-architecture [Dev Container](https://containers.dev/) image for
-classroom use based on Debian
+A flexible [Dev Container](https://containers.dev/) setup based on Debian 12
+with custom user management and development tools.
 
-**Image Location**
+## Features
 
-- [`ghcr.io/majikmate/classroom-codespace-image`](https://github.com/majikmate/classroom-codespace-image/pkgs/container/classroom-codespace-image).
+This devcontainer includes:
 
-**Supported Architectures:**
+### Core Development Tools
 
-- `linux/amd64`
-- `linux/arm64`
+- **GitHub CLI** (v2.78.0) - Command line interface for GitHub
+- **Git** - Version control with custom configuration
+- **Go** (v1.25.1) - Go programming language
+- **Node.js** (v22.19.0) - JavaScript runtime with pnpm and nvm
+- **Deno** (v2.4.5) - Modern JavaScript/TypeScript runtime
 
-## Included Features
+### Environment Features
 
-This image comes with a variety of pre-installed tools and languages.
+- **Custom User Management** - Automated user creation with configurable UID/GID
+- **Locale Support** - en_US.UTF-8 with custom locale configuration
+- **OS Updates** - Automatic system package updates on container creation
 
-### Core Tools
+### VS Code Integration
 
-- **GitHub CLI**
-- **Docker-in-Docker**
+- Pre-configured with recommended extensions:
+  - VS Live Share
+  - Deno language server
+- Optimized settings for Git workflows
+- Deno-powered TypeScript/JavaScript development
 
-### Languages & Runtimes
+## Configuration
 
-- **Go**
-- **Java** (OpenJDK, Gradle, Maven, Ant, Groovy)
-- **Node.js** (LTS, pnpm, nvm)
-- **Deno**
-- **Python**
-- **Conda & Mamba (Miniforge)**
-
-## Version management
-
-The configuration explicitly references a Dockerfile with a pinned image version
-so that dependabot can detect version changes.
-
-`devcontainer.json` feature version are locked by `devcontainer-lock.json`.
-
-To manage the lock file install devcontainer cli:
-
-```
-$ npm install -g @devcontainers/cli
-```
-
-To check for potential upgrades to the latest feature versions use:
-
-```
-$ devcontainer outdated --workspace-folder .
-```
-
-To upgrade to the latest feature versions use:
-
-```
-$ devcontainer upgrade --workspace-folder .
-```
-
-## Usage in a Dev Container Environment
-
-To use this image in your development environment, reference it in your
-`.devcontainer/devcontainer.json` file as the `image` property. This ensures
-your workspace uses the pre-configured tools and languages provided by the
-image.
-
-`.devcontainer/devcontainer.json`:
+The devcontainer is configured through build arguments in `devcontainer.json`:
 
 ```json
 {
-    "name": "My Project",
-    "image": "ghcr.io/majikmate/classroom-codespace-image:latest",
-
-    // Add other features or customizations
-    "features": {
-        // e.g., "ghcr.io/devcontainers/features/rust:1": {}
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "USERNAME": "prot",
+            "USER_UID": "1001",
+            "USER_GID": "1001"
+        }
     }
 }
 ```
 
-You can specify the image version using semantic versioning—pin to a major,
-minor, or patch version as needed. The tag `latest` will always reference the
-most recently published image.
+### Custom User Management
 
-**Examples:**
+The `adduser.sh` script handles user creation/updates:
 
-- Use the latest image:
-  ```json
-  "image": "ghcr.io/majikmate/classroom-codespace-image:latest"
-  ```
-- Pin to a major version (e.g., `1`):
-  ```json
-  "image": "ghcr.io/majikmate/classroom-codespace-image:1"
-  ```
-- Pin to a minor version (e.g., `1.2`):
-  ```json
-  "image": "ghcr.io/majikmate/classroom-codespace-image:1.2"
-  ```
-- Pin to a specific patch version (e.g., `1.2.3`):
-  ```json
-  "image": "ghcr.io/majikmate/classroom-codespace-image:1.2.3"
-  ```
+- Creates users with specified UID/GID
+- Updates existing users if UID/GID changes
+- Supports both automatic and manual ID assignment
 
-## Pulling the Image with Docker
+## Usage
 
-You can also pull the image directly using Docker:
+### Prerequisites
 
-```sh
-docker pull ghcr.io/majikmate/classroom-codespace-image:latest
-```
+- Docker or Podman
+- VS Code with Dev Containers extension
+- Optional: GitHub token for CLI authentication
 
-Replace `latest` with a specific version tag if needed:
+### Getting Started
 
-```sh
-docker pull ghcr.io/majikmate/classroom-codespace-image:1.2.3
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/majikmate/devcontainer-dev.git
+   cd devcontainer-dev
+   ```
+
+2. Open in VS Code:
+   ```bash
+   code .
+   ```
+
+3. When prompted, reopen in container, or use Command Palette:
+   - `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac)
+   - Select "Dev Containers: Reopen in Container"
+
+### Environment Variables
+
+Set these environment variables for full functionality:
+
+- `GH_TOKEN` - GitHub personal access token for CLI authentication
+
+## Development Features
+
+### Git Configuration
+
+The container comes with optimized Git settings for smooth workflows:
+
+- Auto-fetch enabled
+- Auto-stash before pulls
+- Rebase on sync
+- Smart commit with auto-staging
+- Post-commit sync
+
+### Deno Integration
+
+- Deno language server enabled by default
+- TypeScript checking with `--check=all`
+- Test runner with `--allow-all` permissions
+- Default formatter and linter
+
+## Version Management
+
+Feature versions are managed through the devcontainer configuration:
+
+```bash
+# Install devcontainer CLI
+npm install -g @devcontainers/cli
+
+# Check for feature updates
+devcontainer outdated --workspace-folder .
+
+# Update to latest versions
+devcontainer upgrade --workspace-folder .
 ```
