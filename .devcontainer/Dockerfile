@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/base:2.0.1-debian-12
+FROM mcr.microsoft.com/devcontainers/base:2-debian-13
 
 # Accept GH_TOKEN as build argument and set as environment variable for feature installation
 ARG GH_TOKEN
