@@ -1,4 +1,6 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// For format details, see https://aka.ms/devcontainer.json. For config options,                 ],
+
+// configure the innitial default themee
 // README at: https://github.com/devcontainers/templates/tree/main/src/debian
 {
     "name": "Debian",
@@ -15,19 +17,19 @@
     "features": {
         "ghcr.io/devcontainers/features/github-cli:latest": {
             "installDirectlyFromGitHubRelease": true,
-            "version": "2.78.0"
+            "version": "latest"
         },
         "ghcr.io/devcontainers/features/go:latest": {
-            "version": "1.25.1"
+            "version": "latest"
         },
         "ghcr.io/devcontainers/features/node:latest": {
             "nodeGypDependencies": true,
-            "version": "22.19.0",
-            "pnpmVersion": "10.15.1",
-            "nvmVersion": "0.40.3"
+            "version": "lts",
+            "pnpmVersion": "latest",
+            "nvmVersion": "latest"
         },
         "ghcr.io/devcontainer-community/devcontainer-features/deno.com:latest": {
-            "version": "v2.4.5"
+            "version": "latest"
         },
         "ghcr.io/majikmate/devcontainer-features/locales:latest": {
             "lang": "en_US.UTF-8"
@@ -44,26 +46,24 @@
         "ghcr.io/devcontainers/features/go",
         "ghcr.io/devcontainers/features/node",
         "ghcr.io/devcontainer-community/devcontainer-features/deno.com",
-        "ghcr.io/rocker-org/devcontainer-features/miniforge",
         "ghcr.io/majikmate/devcontainer-features/locales",
         "ghcr.io/majikmate/devcontainer-features/git",
         "ghcr.io/majikmate/devcontainer-features/update-os"
     ],
 
     // update os packages whenever the container is created
-    // onCreateCommand is also triggered on automatic prebuilds
     "remoteUser": "vscode",
+    "updateContentCommand": "npm install -g @devcontainers/cli",
     "containerEnv": {
         "DEBIAN_FRONTEND": "noninteractive"
     },
-    // sudo update-locale LANG="en_US.UTF-8" LC_TIME="de_AT.UTF-8" LC_NUMERIC="de_AT.UTF-8" LC_MONETARY="de_AT.UTF-8" LC_MEASUREMENT="de_AT.UTF-8"
-    // "onCreateCommand": "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove -y && sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* && sudo ln -fs /usr/share/zoneinfo/Europe/Vienna /etc/localtime && sudo dpkg-reconfigure -f noninteractive tzdata && sudo mkdir -p /usr/local/share/majikmate/ && sudo touch /usr/local/share/majikmate/codespace-image-created ",
 
     // configure vscode environment
     "customizations": {
         "vscode": {
             "extensions": [
-                "denoland.vscode-deno"
+                "denoland.vscode-deno",
+                "github.vscode-github-actions"
             ],
             "settings": {
                 // define json schemas for devcontainer files
@@ -85,10 +85,9 @@
                 // default terminal profile
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "terminal.integrated.profiles.linux": {
-                    // "bash": null,
-                    // "zsh": {
-                    //     "path": "zsh"
-                    // }
+                    "bash": {
+                        "path": "/bin/bash"
+                    }
                 },
 
                 // configure the innitial default theme
@@ -152,7 +151,25 @@
                 "editor.detectIndentation": false,
 
                 // "editor.defaultFormatter": "denoland.vscode-deno" -> use the Deno formatter and linter as the default ones
-                "editor.defaultFormatter": "denoland.vscode-deno"
+                "editor.defaultFormatter": "denoland.vscode-deno",
+
+                // Go-specific settings
+                "[go]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "golang.go",
+                    "editor.insertSpaces": false,
+                    "editor.tabSize": 4,
+                    "editor.codeActionsOnSave": {
+                        "source.organizeImports": "explicit"
+                    }
+                },
+                "[go.mod]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "golang.go"
+                },
+                "[go.sum]": {
+                    "editor.formatOnSave": false
+                }
             }
         }
     }
