@@ -47,7 +47,7 @@
     ],
 
     // update os packages whenever the container is created
-    "remoteUser": "dev",
+    "remoteUser": "vscode",
     "updateContentCommand": "npm install -g @devcontainers/cli",
     "containerEnv": {
         "DEBIAN_FRONTEND": "noninteractive"
