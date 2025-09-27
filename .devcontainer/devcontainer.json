@@ -66,6 +66,22 @@
                 "denoland.vscode-deno"
             ],
             "settings": {
+                // define json schemas for devcontainer files
+                "json.schemas": [
+                    {
+                        "fileMatch": [
+                            "**/devcontainer-feature.json"
+                        ],
+                        "url": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainerFeature.schema.json"
+                    },
+                    {
+                        "fileMatch": [
+                            "**/devcontainer.json"
+                        ],
+                        "url": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json"
+                    }
+                ],
+
                 // default terminal profile
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "terminal.integrated.profiles.linux": {
