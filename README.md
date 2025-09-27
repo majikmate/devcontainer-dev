@@ -23,15 +23,19 @@ This devcontainer includes:
 
 ### VS Code Integration
 
-- Pre-configured with recommended extensions:
-  - **Go extension** - Full Go language support with formatting, debugging, and
-    testing
+- **Automatic extension installation** via devcontainer features:
+  - **Go extension** - Automatically installed by Go feature with full language
+    support
+  - **Go language server** - Integrated debugging, testing, and formatting
+- **Manual extensions** for additional functionality:
   - **Deno language server** - TypeScript/JavaScript development with modern
     runtime
   - **GitHub Actions** - Workflow syntax highlighting and validation
-- Optimized settings for Git workflows with auto-rebase and smart commits
-- DevContainer schema validation for `.devcontainer` files
-- Language-specific formatting:
+- **Optimized settings** for seamless development:
+  - Git workflows with auto-rebase and smart commits
+  - DevContainer schema validation for configuration files
+  - Language-specific formatting and code actions
+- **Language-specific formatting**:
   - **Go files**: `gofmt` with automatic import organization and tab indentation
   - **TypeScript/JavaScript**: Deno formatter with consistent code style
 
@@ -150,13 +154,16 @@ friction.
 
 ### Go Development
 
-- **Go v1.25.1** with full language server support
+- **Latest Go version** with full language server support (automatically
+  installed)
 - **Automatic formatting** with `gofmt` on save
-- **Import organization** - automatically sorts and removes unused imports
-- **Tab indentation** following Go conventions
+- **Import organization** - explicitly organizes and removes unused imports when
+  saving
+- **Tab indentation** following Go language conventions (overrides global space
+  setting)
 - **Integrated testing** and debugging support
-- **Go modules** support with `go.mod` and `go.sum` formatting
-- **Code actions** for common Go development tasks
+- **Go modules** support with `go.mod` formatting and `go.sum` handling
+- **Code actions** for common Go development tasks and refactoring
 
 ### Deno Integration
 
@@ -168,13 +175,18 @@ friction.
 
 ## Version Management
 
-Tool versions are explicitly defined in the devcontainer configuration for
-reproducible builds:
+Tool versions are configured to use the latest stable releases for optimal
+development experience:
 
-- **GitHub CLI**: v2.78.0
-- **Go**: v1.25.1
-- **Node.js**: v22.19.0 (with pnpm v10.15.1, nvm v0.40.3)
-- **Deno**: v2.4.5
+- **GitHub CLI**: Latest stable release
+- **Go**: Latest stable release
+- **Node.js**: Latest LTS (Long Term Support) release
+  - **pnpm**: Latest stable release
+  - **nvm**: Latest stable release
+- **Deno**: Latest stable release
+
+This configuration ensures you always have access to the newest features,
+security updates, and performance improvements.
 
 ### Updating Versions
 
