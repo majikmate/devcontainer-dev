@@ -5,12 +5,7 @@
 {
     "name": "Debian",
     "build": {
-        "dockerfile": "Dockerfile",
-        "args": {
-            "USERNAME": "prot",
-            "USER_UID": "1001",
-            "USER_GID": "1001"
-        }
+        "dockerfile": "Dockerfile"
     },
 
     // Features to add to the dev container. More info: https://containers.dev/features.
@@ -52,7 +47,7 @@
     ],
 
     // update os packages whenever the container is created
-    "remoteUser": "vscode",
+    "remoteUser": "dev",
     "updateContentCommand": "npm install -g @devcontainers/cli",
     "containerEnv": {
         "DEBIAN_FRONTEND": "noninteractive"
@@ -62,6 +57,7 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                "bierner.github-markdown-preview",
                 "denoland.vscode-deno",
                 "github.vscode-github-actions"
             ],
@@ -86,10 +82,18 @@
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "terminal.integrated.profiles.linux": {
                     "bash": {
-                        "path": "/bin/bash"
+                        "path": "bash"
                     }
                 },
+                // enable auto update of extensions
+                "extensions.autoUpdate": true,
+                // enable auto check for updates of extensions
+                "extensions.autoCheckUpdates": true,
 
+                // open markdown files in preview mode
+                "workbench.editorAssociations": {
+                    "*.md": "vscode.markdown.preview.editor"
+                },
                 // configure the innitial default theme
                 "workbench.colorTheme": "Visual Studio Dark",
                 // enable to use deno as the typescript language server, see "https://docs.deno.com/runtime/getting_started/installation/"
