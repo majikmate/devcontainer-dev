@@ -1,1 +1,2 @@
-FROM mcr.microsoft.com/devcontainers/base:2.0.1-debian-12
+ARG VARIANT="bookworm"
+FROM buildpack-deps:${VARIANT}-curl

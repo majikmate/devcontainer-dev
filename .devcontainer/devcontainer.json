@@ -1,15 +1,27 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options,                 ],
-
 // configure the innitial default themee
 // README at: https://github.com/devcontainers/templates/tree/main/src/debian
 {
     "name": "Debian",
     "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Dockerfile",
+        "args": {
+            // Update 'VARIANT' to pick a different version of Debian.
+            // Options: bookworm (default), bullseye, buster
+            "VARIANT": "bookworm"
+        }
     },
-
+    // Set *default* user. Can be overridden in Dockerfile using USER <name>
+    "remoteUser": "dev",
     // Features to add to the dev container. More info: https://containers.dev/features.
     "features": {
+        "ghcr.io/devcontainers/features/common-utils:2.5": {
+            "installZsh": false,
+            "installOhMyZsh": false,
+            "upgradePackages": false,
+            "username": "dev",
+            "userUid": "1000",
+            "userGId": "1000"
+        },
         "ghcr.io/devcontainers/features/github-cli:latest": {
             "installDirectlyFromGitHubRelease": true,
             "version": "latest"
@@ -37,6 +49,7 @@
 
     // Explicit feature installation order - update-os must be last
     "overrideFeatureInstallOrder": [
+        "ghcr.io/devcontainers/features/common-utils",
         "ghcr.io/devcontainers/features/github-cli",
         "ghcr.io/devcontainers/features/go",
         "ghcr.io/devcontainers/features/node",
@@ -46,9 +59,10 @@
         "ghcr.io/majikmate/devcontainer-features/update-os"
     ],
 
-    // update os packages whenever the container is created
-    "remoteUser": "vscode",
+    // install devcontainer cli
     "updateContentCommand": "npm install -g @devcontainers/cli",
+
+    // Set environment variables for the container.
     "containerEnv": {
         "DEBIAN_FRONTEND": "noninteractive"
     },
@@ -58,6 +72,7 @@
         "vscode": {
             "extensions": [
                 "bierner.github-markdown-preview",
+                "golang.go",
                 "denoland.vscode-deno",
                 "github.vscode-github-actions"
             ],

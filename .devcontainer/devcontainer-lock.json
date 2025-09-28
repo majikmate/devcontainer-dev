@@ -5,6 +5,11 @@
       "resolved": "ghcr.io/devcontainer-community/devcontainer-features/deno.com@sha256:5e9e073c20529fc7c81a54ec9d44754ee4bb360baaf2b060c6d32f6fb60d5889",
       "integrity": "sha256:5e9e073c20529fc7c81a54ec9d44754ee4bb360baaf2b060c6d32f6fb60d5889"
     },
+    "ghcr.io/devcontainers/features/common-utils:2.5": {
+      "version": "2.5.4",
+      "resolved": "ghcr.io/devcontainers/features/common-utils@sha256:00fd45550f578d9d515044d9e2226e908dbc3d7aa6fcb9dee4d8bdb60be114cf",
+      "integrity": "sha256:00fd45550f578d9d515044d9e2226e908dbc3d7aa6fcb9dee4d8bdb60be114cf"
+    },
     "ghcr.io/devcontainers/features/github-cli:latest": {
       "version": "1.0.15",
       "resolved": "ghcr.io/devcontainers/features/github-cli@sha256:1ad1ec1a806cc9926c84ca5b147427bba03b97e14e91f9df89af83726039ecaf",
