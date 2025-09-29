@@ -41,6 +41,9 @@
         "ghcr.io/majikmate/devcontainer-features/locales:latest": {
             "lang": "en_US.UTF-8"
         },
+        "ghcr.io/majikmate/devcontainer-features/aliases:latest": {
+            "aliases": "ls=ls -h --color=auto, ll=ls -lah --color=auto, vs=code -r ., grep=grep --color=auto"
+        },
         "ghcr.io/majikmate/devcontainer-features/git:latest": {
         },
         "ghcr.io/majikmate/devcontainer-features/update-os:latest": {
