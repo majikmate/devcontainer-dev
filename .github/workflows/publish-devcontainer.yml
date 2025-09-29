@@ -82,6 +82,19 @@ jobs:
         uses: devcontainers/ci@v0.3
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # OCI metadata environment variables that will be passed as build args
+          OCI_IMAGE_TITLE: "DevContainer Development Environment"
+          OCI_IMAGE_DESCRIPTION: "Flexible Dev Container setup based on Debian 12 with custom user management and development tools"
+          OCI_IMAGE_VERSION: ${{ needs.setup.outputs.version }}
+          OCI_IMAGE_REVISION: ${{ github.sha }}
+          OCI_IMAGE_REF_NAME: ${{ github.ref_name }}
+          OCI_IMAGE_SOURCE: ${{ github.server_url }}/${{ github.repository }}
+          OCI_IMAGE_URL: ${{ github.server_url }}/${{ github.repository }}
+          OCI_IMAGE_DOCUMENTATION: ${{ github.server_url }}/${{ github.repository }}#readme
+          OCI_IMAGE_CREATED: ${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
+          OCI_IMAGE_AUTHORS: ${{ github.repository_owner }}
+          OCI_IMAGE_VENDOR: ${{ github.repository_owner }}
+          OCI_IMAGE_LICENSES: "MIT"
         with:
           imageName: ${{ needs.setup.outputs.imageName }}
           imageTag: ${{ needs.setup.outputs.version }}-${{ matrix.arch }}
