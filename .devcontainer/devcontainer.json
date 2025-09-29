@@ -58,6 +58,7 @@
         "ghcr.io/devcontainers/features/node",
         "ghcr.io/devcontainer-community/devcontainer-features/deno.com",
         "ghcr.io/majikmate/devcontainer-features/locales",
+        "ghcr.io/majikmate/devcontainer-features/aliases",
         "ghcr.io/majikmate/devcontainer-features/git",
         "ghcr.io/majikmate/devcontainer-features/update-os"
     ],
