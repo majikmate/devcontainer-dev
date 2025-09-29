@@ -67,6 +67,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Check for cache image
+        id: cache-check
+        run: |
+          if skopeo inspect docker://${{ needs.setup.outputs.imageName }}:buildcache-${{ matrix.arch }}; then
+            echo "Cache image found."
+            echo "available=true" >> $GITHUB_OUTPUT
+          else
+            echo "Cache image not found; will build without cache."
+            echo "available=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build and push dev container image for ${{ matrix.arch }}
         uses: devcontainers/ci@v0.3
         env:
@@ -77,9 +88,11 @@ jobs:
           # when isRelease is true, push: always, otherwise push: never
           push: ${{ needs.setup.outputs.isRelease == 'true' && 'always' || 'never' }} 
           platform: ${{ matrix.platform }}
-          cacheFrom: type=registry,ref=${{ needs.setup.outputs.imageName }}:buildcache-${{ matrix.arch }}
+          # Only use cache if it's available
+          cacheFrom: ${{ steps.cache-check.outputs.available == 'true' && format('type=registry,ref={0}:buildcache-{1}', needs.setup.outputs.imageName, matrix.arch) || '' }}
           cacheTo: type=registry,ref=${{ needs.setup.outputs.imageName }}:buildcache-${{ matrix.arch }},mode=max
           runCmd: |
+            echo "--- Cache status: ${{ steps.cache-check.outputs.available == 'true' && 'Using cache' || 'No cache available' }} ---"
             echo "--- Whoami ---"
             whoami
             echo "--- Locale ---"
