@@ -1,215 +1,28 @@
-// configure the innitial default themee
-// README at: https://github.com/devcontainers/templates/tree/main/src/debian
 {
-    "name": "Debian",
-    "build": {
-        "dockerfile": "Dockerfile",
-        "args": {
-            // Update 'VARIANT' to pick a different version of Debian.
-            // Options: bookworm (default), bullseye, buster
-            "VARIANT": "bookworm",
+    // Extends the base devcontainer configuration for development environment
+    "name": "Development Environment",
+    "image": "ghcr.io/majikmate/devcontainer-base:latest",
 
-            // OCI image metadata
-            "OCI_IMAGE_TITLE": "${localEnv:OCI_IMAGE_TITLE}",
-            "OCI_IMAGE_DESCRIPTION": "${localEnv:OCI_IMAGE_DESCRIPTION}",
-            "OCI_IMAGE_VERSION": "${localEnv:OCI_IMAGE_VERSION}",
-            "OCI_IMAGE_REVISION": "${localEnv:OCI_IMAGE_REVISION}",
-            "OCI_IMAGE_REF_NAME": "${localEnv:OCI_IMAGE_REF_NAME}",
-            "OCI_IMAGE_SOURCE": "${localEnv:OCI_IMAGE_SOURCE}",
-            "OCI_IMAGE_URL": "${localEnv:OCI_IMAGE_URL}",
-            "OCI_IMAGE_DOCUMENTATION": "${localEnv:OCI_IMAGE_DOCUMENTATION}",
-            "OCI_IMAGE_CREATED": "${localEnv:OCI_IMAGE_CREATED}",
-            "OCI_IMAGE_AUTHORS": "${localEnv:OCI_IMAGE_AUTHORS}",
-            "OCI_IMAGE_VENDOR": "${localEnv:OCI_IMAGE_VENDOR}",
-            "OCI_IMAGE_LICENSES": "${localEnv:OCI_IMAGE_LICENSES}"
-        }
-    },
-    // Set *default* user. Can be overridden in Dockerfile using USER <name>
-    "remoteUser": "dev",
-    // Features to add to the dev container. More info: https://containers.dev/features.
+    // Additional features for development
     "features": {
-        "ghcr.io/devcontainers/features/common-utils:2.5.4": {
-            "installZsh": false,
-            "installOhMyZsh": false,
-            "upgradePackages": false,
-            "username": "dev",
-            "userUid": "1000",
-            "userGId": "1000"
-        },
         "ghcr.io/devcontainers/features/github-cli:1.0.15": {
             "installDirectlyFromGitHubRelease": true,
             "version": "latest"
-        },
-        "ghcr.io/devcontainers/features/go:1.3.2": {
-            "version": "latest"
-        },
-        "ghcr.io/devcontainers/features/node:1.6.3": {
-            "nodeGypDependencies": true,
-            "version": "lts",
-            "pnpmVersion": "latest",
-            "nvmVersion": "latest"
-        },
-        "ghcr.io/devcontainer-community/devcontainer-features/deno.com:1.0.0": {
-            "version": "latest"
-        },
-        "ghcr.io/majikmate/devcontainer-features/locales:1.0.2": {
-            "lang": "en_US.UTF-8"
-        },
-        "ghcr.io/majikmate/devcontainer-features/aliases:1.0.1": {
-            "aliases": "ls=ls -h --color=auto, ll=ls -lah --color=auto, vs=code -r ., grep=grep --color=auto"
-        },
-        "ghcr.io/majikmate/devcontainer-features/git:1.0.0": {
-        },
-        "ghcr.io/majikmate/devcontainer-features/update-os:1.0.0": {
         }
     },
 
-    // Explicit feature installation order - update-os must be last
-    "overrideFeatureInstallOrder": [
-        "ghcr.io/devcontainers/features/common-utils",
-        "ghcr.io/devcontainers/features/github-cli",
-        "ghcr.io/devcontainers/features/go",
-        "ghcr.io/devcontainers/features/node",
-        "ghcr.io/devcontainer-community/devcontainer-features/deno.com",
-        "ghcr.io/majikmate/devcontainer-features/locales",
-        "ghcr.io/majikmate/devcontainer-features/aliases",
-        "ghcr.io/majikmate/devcontainer-features/git",
-        "ghcr.io/majikmate/devcontainer-features/update-os"
-    ],
-
-    // install devcontainer cli
+    // Install devcontainer cli for development work
     "updateContentCommand": "npm install -g @devcontainers/cli",
 
-    // Set environment variables for the container.
-    "containerEnv": {
-        "DEBIAN_FRONTEND": "noninteractive"
-    },
-
-    // configure vscode environment
+    // Development-specific VS Code configuration
     "customizations": {
         "vscode": {
             "extensions": [
-                "bierner.github-markdown-preview",
-                "golang.go",
-                "denoland.vscode-deno",
+                // Additional extensions for development
                 "github.vscode-github-actions"
             ],
             "settings": {
-                // define json schemas for devcontainer files
-                "json.schemas": [
-                    {
-                        "fileMatch": [
-                            "**/devcontainer-feature.json"
-                        ],
-                        "url": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainerFeature.schema.json"
-                    },
-                    {
-                        "fileMatch": [
-                            "**/devcontainer.json"
-                        ],
-                        "url": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json"
-                    }
-                ],
-
-                // default terminal profile
-                "terminal.integrated.defaultProfile.linux": "bash",
-                "terminal.integrated.profiles.linux": {
-                    "bash": {
-                        "path": "bash"
-                    }
-                },
-                // enable auto update of extensions
-                "extensions.autoUpdate": true,
-                // enable auto check for updates of extensions
-                "extensions.autoCheckUpdates": true,
-
-                // open markdown files in preview mode
-                "workbench.editorAssociations": {
-                    "*.md": "vscode.markdown.preview.editor"
-                },
-                // configure the innitial default theme
-                "workbench.colorTheme": "Visual Studio Dark",
-                // enable to use deno as the typescript language server, see "https://docs.deno.com/runtime/getting_started/installation/"
-                "deno.enable": true,
-                // enable to use deno as the testing framework
-                "deno.codeLens.testArgs": ["--allow-all", "--check=all"],
-
-                // Git settings for smooth workflows within vscode
-                //
-                // Especially "git.autoStash": true and "git.rebaseWhenSync": true are imortant so that
-                // when the starter repo is updated, the changes are automatically fetched and rebased
-                // to the student repos without any conflicts during pull/push/sync operations. Local
-                // changes are stashed before pulling and reapplied after the sync.
-                //
-                // To configure these option also for the command line git, use the following commands:
-                // git config --global pull.rebase true
-                // git config --global rebase.autoStash true
-
-                // ===================================
-                // git settings, do not change
-
-                // "git.autofetch": true -> automatically fetch changes from the starter repo
-                "git.autofetch": true,
-
-                // "git.autoStash": true -> automatically stash changes before pulling
-                "git.autoStash": true,
-
-                // "git.confirmSync": false -> do not ask for confirmation before syncing
-                "git.confirmSync": false,
-
-                // "git.enableSmartCommit": true -> automatically stage all changes before commit if no changes are already staged
-                "git.enableSmartCommit": true,
-
-                // "git.postCommitCommand": "sync" -> automatically sync changes after commit
-                "git.postCommitCommand": "sync",
-
-                // "git.rebaseWhenSync": true -> automatically rebase changes when syncing
-                "git.rebaseWhenSync": true,
-
-                // "git.rememberPostCommitCommand": false -> do not remember the last post-commit and always switch back to "sync"
-                "git.rememberPostCommitCommand": false,
-
-                // "git.useEditorAsCommitInput": false -> do not use the editor as the default commit message input
-                "git.useEditorAsCommitInput": false,
-
-                // ===================================
-                // other settings, do not change
-
-                // "editor.formatOnSave": automatically format files on save
-                "editor.formatOnSave": true,
-
-                // "editor.insertSpaces": true -> insert spaces when pressing Tab
-                "editor.insertSpaces": true,
-
-                // "editor.tabSize": use x spaces for indentation
-                "editor.tabSize": 4,
-
-                // "editor.detectIndentation": false -> do not detect indentation so that even when indentation is mixed, the editor will use the defined tab/space settings
-                "editor.detectIndentation": false,
-
-                // "editor.defaultFormatter": "denoland.vscode-deno" -> use the Deno formatter and linter as the default ones
-                "editor.defaultFormatter": "denoland.vscode-deno",
-
-                // Go-specific settings
-                "[go]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "golang.go",
-                    "editor.insertSpaces": false,
-                    "editor.tabSize": 4,
-                    "editor.codeActionsOnSave": {
-                        "source.organizeImports": "explicit"
-                    }
-                },
-                "[go.mod]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "golang.go"
-                },
-                "[go.sum]": {
-                    "editor.formatOnSave": false
-                }
             }
         }
     }
-    // Use 'forwardPorts' to make a list of ports inside the container available locally.
-    //"forwardPorts": []
 }

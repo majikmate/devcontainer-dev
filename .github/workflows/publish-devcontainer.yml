@@ -5,16 +5,15 @@ on:
     branches:
       - main
     tags:
-      - 'v*'
+      - "v*"
   pull_request:
     paths:
-      - '.devcontainer/**'
-      - '.github/**'
+      - ".devcontainer/**"
+      - ".github/**"
 
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository }}
 
-  
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -37,7 +36,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=raw,value=latest,enable={{is_default_branch}}
-  
+
   build:
     needs: setup
     strategy:
@@ -82,24 +81,11 @@ jobs:
         uses: devcontainers/ci@v0.3
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # OCI metadata environment variables that will be passed as build args
-          OCI_IMAGE_TITLE: "DevContainer Development Environment"
-          OCI_IMAGE_DESCRIPTION: "Flexible Dev Container setup based on Debian 12 with custom user management and development tools"
-          OCI_IMAGE_VERSION: ${{ needs.setup.outputs.version }}
-          OCI_IMAGE_REVISION: ${{ github.sha }}
-          OCI_IMAGE_REF_NAME: ${{ github.ref_name }}
-          OCI_IMAGE_SOURCE: ${{ github.server_url }}/${{ github.repository }}
-          OCI_IMAGE_URL: ${{ github.server_url }}/${{ github.repository }}
-          OCI_IMAGE_DOCUMENTATION: ${{ github.server_url }}/${{ github.repository }}#readme
-          OCI_IMAGE_CREATED: ${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
-          OCI_IMAGE_AUTHORS: ${{ github.repository_owner }}
-          OCI_IMAGE_VENDOR: ${{ github.repository_owner }}
-          OCI_IMAGE_LICENSES: "MIT"
         with:
           imageName: ${{ needs.setup.outputs.imageName }}
           imageTag: ${{ needs.setup.outputs.version }}-${{ matrix.arch }}
           # when isRelease is true, push: always, otherwise push: never
-          push: ${{ needs.setup.outputs.isRelease == 'true' && 'always' || 'never' }} 
+          push: ${{ needs.setup.outputs.isRelease == 'true' && 'always' || 'never' }}
           platform: ${{ matrix.platform }}
           # Only use cache if it's available
           cacheFrom: ${{ steps.cache-check.outputs.available == 'true' && format('type=registry,ref={0}:buildcache-{1}', needs.setup.outputs.imageName, matrix.arch) || '' }}
@@ -136,10 +122,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Create and push multi-arch manifest
         run: |
-          echo "${{ needs.setup.outputs.tags }}" | while IFS= read -r tag; do 
+          echo "${{ needs.setup.outputs.tags }}" | while IFS= read -r tag; do
             if [ -z "$tag" ]; then continue; fi
             docker manifest create "$tag" \
               --amend "${{ needs.setup.outputs.imageName }}:${{ needs.setup.outputs.version }}-amd64" \
