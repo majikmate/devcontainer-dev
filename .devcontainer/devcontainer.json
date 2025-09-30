@@ -7,7 +7,21 @@
         "args": {
             // Update 'VARIANT' to pick a different version of Debian.
             // Options: bookworm (default), bullseye, buster
-            "VARIANT": "bookworm"
+            "VARIANT": "bookworm",
+
+            // OCI image metadata
+            "OCI_IMAGE_TITLE": "${localEnv:OCI_IMAGE_TITLE}",
+            "OCI_IMAGE_DESCRIPTION": "${localEnv:OCI_IMAGE_DESCRIPTION}",
+            "OCI_IMAGE_VERSION": "${localEnv:OCI_IMAGE_VERSION}",
+            "OCI_IMAGE_REVISION": "${localEnv:OCI_IMAGE_REVISION}",
+            "OCI_IMAGE_REF_NAME": "${localEnv:OCI_IMAGE_REF_NAME}",
+            "OCI_IMAGE_SOURCE": "${localEnv:OCI_IMAGE_SOURCE}",
+            "OCI_IMAGE_URL": "${localEnv:OCI_IMAGE_URL}",
+            "OCI_IMAGE_DOCUMENTATION": "${localEnv:OCI_IMAGE_DOCUMENTATION}",
+            "OCI_IMAGE_CREATED": "${localEnv:OCI_IMAGE_CREATED}",
+            "OCI_IMAGE_AUTHORS": "${localEnv:OCI_IMAGE_AUTHORS}",
+            "OCI_IMAGE_VENDOR": "${localEnv:OCI_IMAGE_VENDOR}",
+            "OCI_IMAGE_LICENSES": "${localEnv:OCI_IMAGE_LICENSES}"
         }
     },
     // Set *default* user. Can be overridden in Dockerfile using USER <name>
