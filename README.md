@@ -62,7 +62,7 @@ Add `.devcontainer/devcontainer.json` to a repository:
 ## Releases
 
 - **Nightly check at 03:37 UTC.** A new version is released when an input
-  changes: `.devcontainer`, the digest of `devcontainer-base:2`, or the newest
+  changes: `.devcontainer`, `README.md`, the digest of `devcontainer-base:2`, or the newest
   GitHub CLI version. Pending Debian updates and an age above 7 days also lead
   to a new version.
 - **Manual:** **Actions → Release → Run workflow**. The option `upstream` (on
@@ -76,8 +76,9 @@ Rules: [Releases](https://github.com/majikmate/devcontainer-core#releases).
 
 ## Change the image
 
-Change `.devcontainer/` through a pull request. After the merge, the new image
-is released automatically.
+Change `.devcontainer/` or `README.md` through a pull request. After the merge,
+the new image is released automatically (GitHub shows the README of the newest
+image on the package page).
 
 ## License
 
