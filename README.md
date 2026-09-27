@@ -52,11 +52,17 @@ The exact versions of each release are listed in its
 The workflow [`.github/workflows/release.yml`](.github/workflows/release.yml)
 uses the shared workflow of `devcontainer-base` (described in its
 [README](https://github.com/majikmate/devcontainer-base#automatic-releases)).
-Every hour it checks the inputs of the image: the `.devcontainer` folder, the
-digests of the base image and the features, and the newest GitHub CLI version
+Every night at 03:37 UTC, two hours after the check of the base image, it
+checks the inputs of the image: the `.devcontainer` folder, the digests of the
+base image and the features, and the newest GitHub CLI version
 ([`.github/tool-versions.sh`](.github/tool-versions.sh)). When an input changed,
 it builds, tests and releases a new version. Pull requests are only built and
 tested.
+
+To check at once, open **Actions → Release → Run workflow** and keep the default
+options. It runs the same check. The option `force` releases a new version
+without a change. After a manual base image release, run this check to take
+over the new base image before the next night.
 
 ## Customize
 
