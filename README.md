@@ -1,93 +1,85 @@
-# Dev Container: Development Environment
+# devcontainer-dev
 
-A Debian-based [Dev Container](https://containers.dev/) for the development of
-the majikmate Dev Containers, and for general development with Go, Node.js,
-Deno and the GitHub CLI.
+The development image for the Dev Container repositories and for general
+development with Go, Node.js, Deno and the GitHub CLI.
 
-Published image: `ghcr.io/majikmate/devcontainer-dev` (linux/amd64 and
-linux/arm64)
+**Image:** `ghcr.io/majikmate/devcontainer-dev:2` · linux/amd64, linux/arm64 ·
+[release notes](https://github.com/majikmate/devcontainer-dev/releases)
 
-- Built on [`devcontainer-base`](https://github.com/majikmate/devcontainer-base)
-  (`ghcr.io/majikmate/devcontainer-base:2`, Debian 13 "trixie"), which builds on
-  [`devcontainer-core`](https://github.com/majikmate/devcontainer-core)
-- Rebuilt and released automatically when the base image or the GitHub CLI gets
-  a new version
+## Dependencies
 
-## Quick start
+```text
+                                               Nightly Content
+devcontainer-features                                  Go library of layers, compiled into devcon
+  ▼
+devcontainer-core:1                            23:17   Debian 13, devcon, user dev, zsh, SSH server
+├── devcontainer-base:2                        01:17   + go, build-tools, node, deno, prettier
+│   ├── devcontainer-dev:2                     03:37   + github-cli
+│   ├── devcontainer-classroom-web:2           03:47   classroom settings, AI off
+│   └── devcontainer-classroom-web-advanced:2  03:57   + playwright-deps, AI on
+└── devcontainer-classroom-exam-ts:2           01:27   + deno, AI and coding assistance off
+```
 
-1. Prerequisites: Docker (or Docker Desktop), VS Code with the "Dev Containers"
-   extension.
-2. Use the image in a repository:
+This repository: **devcontainer-dev**. Nightly checks in UTC. Repositories:
+[core](https://github.com/majikmate/devcontainer-core) ·
+[features](https://github.com/majikmate/devcontainer-features) ·
+[base](https://github.com/majikmate/devcontainer-base) ·
+[dev](https://github.com/majikmate/devcontainer-dev) ·
+[classroom-web](https://github.com/majikmate/devcontainer-classroom-web) ·
+[classroom-web-advanced](https://github.com/majikmate/devcontainer-classroom-web-advanced) ·
+[classroom-exam-ts](https://github.com/majikmate/devcontainer-classroom-exam-ts)
 
-   ```jsonc
-   {
-     "image": "ghcr.io/majikmate/devcontainer-dev:2",
-   }
-   ```
+## Use
 
-3. Run **Dev Containers: Reopen in Container**. You work as user `dev`.
+Add `.devcontainer/devcontainer.json` to a repository:
 
-## What's included
+```jsonc
+{
+  "image": "ghcr.io/majikmate/devcontainer-dev:2",
+}
+```
 
-From the base image:
+- `:2` receives all compatible updates (new tool versions, security updates).
+- A full version (for example `:2.0.5`) stays available for at least 90 days.
+- With a local Docker installation, run
+  `docker pull ghcr.io/majikmate/devcontainer-dev:2` and then **Dev
+  Containers: Rebuild Container** to get the newest version.
 
-- Go (newest release), Node.js (newest LTS) with npm (no pnpm), Deno (newest
-  LTS), Prettier with Tailwind CSS class sorting
-- zsh with Pure prompt, locales, aliases, Git configuration, SSH server on port
-  2222 (keys of your GitHub account only, see
-  [SSH access](https://github.com/majikmate/devcontainer-core#ssh-access))
-- VS Code: Go, Deno, Prettier, Markdown preview and PlantUML extensions;
-  Prettier as the only formatter (standard style, format on save); opinionated
-  Git settings (auto fetch, auto stash, rebase on sync)
+## Content
 
-Added by this image:
+| Layer | Content | Version |
+| ----- | ------- | ------- |
+| (devcontainer-base) | Debian 13, user `dev`, zsh, SSH server; Go, Node.js with npm, Deno, Prettier | see [base](https://github.com/majikmate/devcontainer-base#content) |
+| `github-cli` | GitHub CLI (`gh`) | newest release |
+| (`devcontainer.json`) | Dev Container CLI (`@devcontainers/cli`), installed when the container is created | newest release |
 
-- GitHub CLI (newest release, layer `github-cli` of devcontainer-core, one line
-  in [`.devcontainer/Dockerfile`](.devcontainer/Dockerfile))
-- Dev Container CLI (`@devcontainers/cli`, newest version, installed when the
-  container is created)
-- VS Code extension: GitHub Actions
+## VS Code
 
-The exact versions of each release are listed in its
-[release notes](https://github.com/majikmate/devcontainer-dev/releases).
+- **Extensions:** the extensions of the base image, plus GitHub Actions.
+- **Settings:** the settings of the base image (Prettier as the only
+  formatter, format on save).
 
-## Automatic releases
+## Releases
 
-The workflow [`.github/workflows/release.yml`](.github/workflows/release.yml)
-uses the shared workflow of `devcontainer-core` (described in its
-[README](https://github.com/majikmate/devcontainer-core#releases)).
-Every night at 03:37 UTC, two hours after the check of the base image, it
-checks the inputs of the image: the `.devcontainer` folder, the digest of the
-base image, and the newest GitHub CLI version. When an input changed, it
-builds, tests and releases a new version. Pull requests are only built and
-tested.
+- **Nightly check at 03:37 UTC.** A new version is released when an input
+  changes: `.devcontainer`, `README.md`, the digest of `devcontainer-base:2`, or the newest
+  GitHub CLI version. Pending Debian updates and an age above 7 days also lead
+  to a new version.
+- **Manual:** **Actions → Release → Run workflow**. The option `upstream` (on
+  by default) first updates base and core; `force` releases without a change.
+- **Pull requests** build and test both architectures and publish nothing.
+- **Kept versions:** the newest release and the tags `2`, `2.x` and `latest`.
+  Older releases are deleted after 90 days. **Actions → Prune** lists or
+  deletes them at once.
 
-To get a new image at once, open **Actions → Release → Run workflow** and keep
-the default options. With the option `upstream` (on by default), the run first
-starts the Release workflow of devcontainer-base and waits for it;
-devcontainer-base first starts devcontainer-core in the same way. Each image in
-the chain gets a new release only if one of its inputs changed. Then the run
-checks this image and releases a new version if an input changed. The option
-`force` releases a new version of this image without a change. See
-[Schedule and chain build](https://github.com/majikmate/devcontainer-core#schedule-and-chain-build)
-for the GitHub App.
+Rules: [Releases](https://github.com/majikmate/devcontainer-core#releases).
 
-### Kept package versions
+## Change the image
 
-After every release run, the outdated versions of the image package are
-deleted (rules: [Releases](https://github.com/majikmate/devcontainer-core#releases)):
+Change `.devcontainer/` or `README.md` through a pull request. After the merge,
+the new image is released automatically (GitHub shows the README of the newest
+image on the package page).
 
-- releases older than 90 days; the newest release and the tags `2`, `2.x` and
-  `latest` are always kept,
-- versions of older major lines and untagged versions that no image uses.
+## License
 
-A full version (for example `:2.0.3`) stays available for at least 90 days
-after its release. The manual workflow **Actions → Prune → Run workflow** lists
-(`report`) or deletes (`apply`) the outdated versions at once; the scope
-`all-but-newest` deletes every release except the newest.
-
-## Customize
-
-Change the layers in `.devcontainer/Dockerfile` and the extensions and settings
-in `.devcontainer/devcontainer.json` through a pull request. After the merge,
-the image is released automatically.
+MIT
