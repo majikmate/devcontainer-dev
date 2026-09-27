@@ -59,10 +59,14 @@ base image and the features, and the newest GitHub CLI version
 it builds, tests and releases a new version. Pull requests are only built and
 tested.
 
-To check at once, open **Actions → Release → Run workflow** and keep the default
-options. It runs the same check. The option `force` releases a new version
-without a change. After a manual base image release, run this check to take
-over the new base image before the next night.
+To get a new image at once, open **Actions → Release → Run workflow** and keep
+the default options. With the option `upstream` (on by default), the run first
+starts the Release workflow of devcontainer-base and waits for it. The base
+image gets a new release only if one of its inputs changed. Then the run checks
+this image and releases a new version if an input changed. The option `force`
+releases a new version of this image without a change. See
+[Chain build](https://github.com/majikmate/devcontainer-base#chain-build) for
+the one-time setup of the GitHub App.
 
 ## Customize
 
