@@ -72,6 +72,20 @@ checks this image and releases a new version if an input changed. The option
 [Schedule and chain build](https://github.com/majikmate/devcontainer-core#schedule-and-chain-build)
 for the GitHub App.
 
+### Kept package versions
+
+After every release run, the outdated versions of the image package are
+deleted (rules: [Releases](https://github.com/majikmate/devcontainer-core#releases)):
+
+- releases older than 90 days; the newest release and the tags `2`, `2.x` and
+  `latest` are always kept,
+- versions of older major lines and untagged versions that no image uses.
+
+A full version (for example `:2.0.3`) stays available for at least 90 days
+after its release. The manual workflow **Actions → Prune → Run workflow** lists
+(`report`) or deletes (`apply`) the outdated versions at once; the scope
+`all-but-newest` deletes every release except the newest.
+
 ## Customize
 
 Change the layers in `.devcontainer/Dockerfile` and the extensions and settings
