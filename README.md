@@ -1,14 +1,15 @@
 # Dev Container: Development Environment
 
 A Debian-based [Dev Container](https://containers.dev/) for the development of
-the majikmate Dev Containers and features, and for general development with Go,
-Node.js, Deno and the GitHub CLI.
+the majikmate Dev Containers, and for general development with Go, Node.js,
+Deno and the GitHub CLI.
 
 Published image: `ghcr.io/majikmate/devcontainer-dev` (linux/amd64 and
 linux/arm64)
 
 - Built on [`devcontainer-base`](https://github.com/majikmate/devcontainer-base)
-  (`ghcr.io/majikmate/devcontainer-base:2`, Debian 13 "trixie")
+  (`ghcr.io/majikmate/devcontainer-base:2`, Debian 13 "trixie"), which builds on
+  [`devcontainer-core`](https://github.com/majikmate/devcontainer-core)
 - Rebuilt and released automatically when the base image or the GitHub CLI gets
   a new version
 
@@ -30,16 +31,19 @@ linux/arm64)
 
 From the base image:
 
-- Go (newest release), Node.js (newest LTS) with npm and pnpm, Deno (newest
+- Go (newest release), Node.js (newest LTS) with npm (no pnpm), Deno (newest
   LTS), Prettier with Tailwind CSS class sorting
-- zsh with Pure prompt, locales, aliases, Git configuration, SSH server
-- VS Code: Go, Deno, Prettier, Markdown preview, PlantUML and PDF extensions;
+- zsh with Pure prompt, locales, aliases, Git configuration, SSH server on port
+  2222 (keys of your GitHub account only, see
+  [SSH access](https://github.com/majikmate/devcontainer-core#ssh-access))
+- VS Code: Go, Deno, Prettier, Markdown preview and PlantUML extensions;
   Prettier as the only formatter (standard style, format on save); opinionated
   Git settings (auto fetch, auto stash, rebase on sync)
 
 Added by this image:
 
-- GitHub CLI (newest release, feature `github-cli:1`)
+- GitHub CLI (newest release, layer `github-cli` of devcontainer-core, one line
+  in [`.devcontainer/Dockerfile`](.devcontainer/Dockerfile))
 - Dev Container CLI (`@devcontainers/cli`, newest version, installed when the
   container is created)
 - VS Code extension: GitHub Actions
@@ -50,26 +54,26 @@ The exact versions of each release are listed in its
 ## Automatic releases
 
 The workflow [`.github/workflows/release.yml`](.github/workflows/release.yml)
-uses the shared workflow of `devcontainer-base` (described in its
-[README](https://github.com/majikmate/devcontainer-base#automatic-releases)).
+uses the shared workflow of `devcontainer-core` (described in its
+[README](https://github.com/majikmate/devcontainer-core#releases)).
 Every night at 03:37 UTC, two hours after the check of the base image, it
-checks the inputs of the image: the `.devcontainer` folder, the digests of the
-base image and the features, and the newest GitHub CLI version
-([`.github/tool-versions.sh`](.github/tool-versions.sh)). When an input changed,
-it builds, tests and releases a new version. Pull requests are only built and
+checks the inputs of the image: the `.devcontainer` folder, the digest of the
+base image, and the newest GitHub CLI version. When an input changed, it
+builds, tests and releases a new version. Pull requests are only built and
 tested.
 
 To get a new image at once, open **Actions → Release → Run workflow** and keep
 the default options. With the option `upstream` (on by default), the run first
-starts the Release workflow of devcontainer-base and waits for it. The base
-image gets a new release only if one of its inputs changed. Then the run checks
-this image and releases a new version if an input changed. The option `force`
-releases a new version of this image without a change. See
-[Chain build](https://github.com/majikmate/devcontainer-base#chain-build) for
-the one-time setup of the GitHub App.
+starts the Release workflow of devcontainer-base and waits for it;
+devcontainer-base first starts devcontainer-core in the same way. Each image in
+the chain gets a new release only if one of its inputs changed. Then the run
+checks this image and releases a new version if an input changed. The option
+`force` releases a new version of this image without a change. See
+[Schedule and chain build](https://github.com/majikmate/devcontainer-core#schedule-and-chain-build)
+for the GitHub App.
 
 ## Customize
 
-Edit `.devcontainer/devcontainer.json` through a pull request to change
-features, extensions and settings. After the merge, the image is released
-automatically.
+Change the layers in `.devcontainer/Dockerfile` and the extensions and settings
+in `.devcontainer/devcontainer.json` through a pull request. After the merge,
+the image is released automatically.
