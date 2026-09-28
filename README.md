@@ -50,8 +50,8 @@ Add `.devcontainer/devcontainer.json` to a repository:
 | Layer | Content | Version |
 | ----- | ------- | ------- |
 | (devcontainer-base) | Debian 13, user `dev`, zsh, SSH server; Go, Node.js with npm, Deno, Prettier | see [base](https://github.com/majikmate/devcontainer-base#content) |
-| `github-cli` | GitHub CLI (`gh`) | newest release |
-| (`devcontainer.json`) | Dev Container CLI (`@devcontainers/cli`), installed when the container is created | newest release |
+| `github-cli` | GitHub CLI (`gh`) | newest release ([`ghPin`](https://github.com/majikmate/devcontainer-features/blob/main/githubcli/githubcli.go#L30-L33)) |
+| (`devcontainer.json`) | Dev Container CLI (`@devcontainers/cli`), installed when the container is created | newest release ([`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json)) |
 
 ## VS Code
 
