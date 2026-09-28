@@ -12,10 +12,11 @@ on:
     branches: [main]
     tags: ["v*"]
   pull_request:
-  # Nightly check, two hours after the base image (01:17 UTC): a new base image
-  # or a new GitHub CLI release leads to a new release
+  # Nightly check at 23:57 UTC (01:57 CEST), 40 minutes after the base image
+  # (23:17 UTC): a new base image or a new GitHub CLI release leads to a new
+  # release
   schedule:
-    - cron: "37 3 * * *"
+    - cron: "57 23 * * *"
   # Manual check ("Run workflow"): first brings devcontainer-base and
   # devcontainer-core up to date (option upstream, chain build), then runs the
   # same check as the nightly run
