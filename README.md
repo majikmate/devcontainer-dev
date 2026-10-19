@@ -1,7 +1,10 @@
 # devcontainer-dev
 
 The development image for the Dev Container repositories and for general
-development with Go, Node.js, Deno and the GitHub CLI.
+development with Go, Node.js, Deno and the GitHub CLI. It contains everything
+of [devcontainer-classroom-web-advanced](https://github.com/majikmate/devcontainer-classroom-web-advanced)
+(AI assistance, ESLint, Vitest, Playwright, HTML validation), but hides no
+folders.
 
 **Image:** `ghcr.io/majikmate/devcontainer-dev:2` · linux/amd64, linux/arm64 ·
 [release notes](https://github.com/majikmate/devcontainer-dev/releases)
@@ -14,7 +17,7 @@ devcontainer-features                                  Go library of layers, com
   ▼
 devcontainer-core:1                            22:17   Debian 13, devcon, user dev, zsh, SSH server
 ├── devcontainer-base:2                        23:17   + go, build-tools, node, deno, prettier
-│   ├── devcontainer-dev:2                     23:57   + github-cli
+│   ├── devcontainer-dev:2                     23:57   + github-cli, playwright-deps, html-validate, AI on
 │   ├── devcontainer-classroom-web:2           00:07   + html-validate, classroom settings, AI off
 │   └── devcontainer-classroom-web-advanced:2  00:17   + playwright-deps, html-validate, AI on
 └── devcontainer-classroom-exam-ts:2           23:47   + deno, AI and coding assistance off
@@ -49,15 +52,42 @@ Add `.devcontainer/devcontainer.json` to a repository:
 
 | Layer | Content | Version |
 | ----- | ------- | ------- |
-| (devcontainer-base) | Debian 13, user `dev`, zsh, SSH server; Go, Node.js with npm, Deno, Prettier | see [base](https://github.com/majikmate/devcontainer-base#content) |
+| (devcontainer-base) | Debian 13, user `dev`, zsh, SSH server; Go, Node.js with npm, Deno, Prettier with Tailwind CSS class sorting | see [base](https://github.com/majikmate/devcontainer-base#content) |
 | `github-cli` | GitHub CLI (`gh`) | newest release ([`ghPin`](https://github.com/majikmate/devcontainer-features/blob/main/githubcli/githubcli.go#L30-L33)) |
+| `playwright-deps` | native libraries of the Playwright browsers Chromium, Firefox and WebKit | Debian packages of the Debian release ([`debianPin`](https://github.com/majikmate/devcontainer-core/blob/main/pkg/layers/os.go#L31-L34)) |
+| `html-validate` | VS Code extension HTML-validate (offline HTML5 validator) and the global configuration `/.htmlvalidate.json` | newest extension release from the Marketplace |
 | (`devcontainer.json`) | Dev Container CLI (`@devcontainers/cli`), installed when the container is created | newest release ([`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json)) |
+
+Playwright itself is installed in each project
+(`npm install -D @playwright/test`).
 
 ## VS Code
 
-- **Extensions:** the extensions of the base image, plus GitHub Actions.
-- **Settings:** the settings of the base image (Prettier as the only
-  formatter, format on save).
+- **Extensions:** the extensions of the base image, plus
+  [GitHub Actions](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-github-actions),
+  [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint),
+  [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github),
+  [Live Preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server),
+  [Lorem Ipsum](https://marketplace.visualstudio.com/items?itemName=tyriar.lorem-ipsum),
+  [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss),
+  [ES7+ React Snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets),
+  [Vitest](https://marketplace.visualstudio.com/items?itemName=vitest.explorer),
+  [Playwright Test](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright),
+  [HTML-validate](https://marketplace.visualstudio.com/items?itemName=html-validate.vscode-html-validate).
+- **HTML validation:** HTML-validate checks HTML while you type, offline, and
+  shows the problems in the editor and in the Problems view. The global
+  configuration `/.htmlvalidate.json` uses the recommended rules without the
+  style rules that conflict with Prettier (`<!doctype html>`, `<br />` are
+  valid HTML). A project can change single rules in its own
+  `.htmlvalidate.json`.
+- **Formatting and code quality:** Prettier formats on save with the standard
+  Prettier style and sorts Tailwind CSS classes; ESLint fixes all fixable
+  problems on save.
+- **AI:** GitHub Copilot is built into VS Code and turned on.
+- **GitHub Pull Requests:** branch names and pull request defaults are set.
+  Live Preview opens in the external browser and serves the folder `dist`.
+- Extension recommendations are off. Unlike the classroom images, no folder is
+  hidden: `.devcontainer` stays visible.
 
 ## Releases
 

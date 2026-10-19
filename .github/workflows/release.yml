@@ -54,7 +54,7 @@ jobs:
       app-private-key: ${{ secrets.DEVCONTAINER_APP_PRIVATE_KEY }}
     with:
       image-title: DevContainer Development Environment
-      image-description: Development Dev Container (Debian 13, Go, Node.js LTS, Deno LTS, Prettier, GitHub CLI, Dev Container CLI)
+      image-description: Development Dev Container (Debian 13, Go, Node.js LTS, Deno LTS, Prettier with Tailwind CSS sorting, ESLint, Vitest, Playwright, GitHub CLI, Dev Container CLI) with AI assistance
       # Same major version as the base image in .devcontainer/Dockerfile
       major-version: 2
       # The image in the FROM line of .devcontainer/Dockerfile

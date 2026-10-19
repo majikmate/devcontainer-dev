@@ -2,8 +2,12 @@
 // © 2026 Hannes Stauss (scalarion@nimblescape.com)
 // Licensed under the MIT License. See LICENSE in the repository root for details.
 
-// Development environment.
+// Development environment: everything of devcontainer-classroom-web-advanced
+// (AI assistance, ESLint, Vitest, Playwright, HTML validation) without hidden
+// folders, plus the GitHub CLI, GitHub Actions and the Dev Container CLI.
 // Extends ghcr.io/majikmate/devcontainer-base:2 (see .devcontainer/Dockerfile).
+// Formatting (Prettier, standard style, Tailwind CSS class sorting) comes from
+// the base image.
 // Documentation: https://github.com/majikmate/devcontainer-dev#readme
 {
   "name": "Development Environment",
@@ -15,8 +19,47 @@
   // Development-specific VS Code configuration (added to the base configuration)
   "customizations": {
     "vscode": {
-      "extensions": ["github.vscode-github-actions"],
-      "settings": {}
+      "extensions": [
+        // AI: GitHub Copilot (chat, inline suggestions) is built into VS Code
+        // and enabled in this image; sign in with a GitHub account.
+        // GitHub Actions workflows
+        "github.vscode-github-actions",
+        // Code quality
+        "dbaeumer.vscode-eslint",
+        // Issues and pull requests (used by the githubIssues/githubPullRequests settings)
+        "github.vscode-pull-request-github",
+        // Web development
+        "ms-vscode.live-server",
+        "tyriar.lorem-ipsum",
+        "bradlc.vscode-tailwindcss",
+        "dsznajder.es7-react-js-snippets",
+        // Testing
+        "vitest.explorer",
+        "ms-playwright.playwright"
+      ],
+      "settings": {
+        // ESLint: fix all problems on save (Prettier formats on save, see base image)
+        "eslint.enable": true,
+        "eslint.codeActionsOnSave.mode": "all",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+
+        // Disable extension recommendations
+        "extensions.ignoreRecommendations": true,
+
+        // Live Preview: open in the external browser, serve the build output
+        "livePreview.openPreviewTarget": "External Browser",
+        "livePreview.serverRoot": "dist",
+
+        // GitHub Issues and Pull Requests
+        "githubPullRequests.remotes": ["origin"],
+        "githubIssues.issueCompletionFormatScm": "${issueTitle} Fixes ${issueNumberLabel}",
+        "githubIssues.issueBranchTitle": "${user}/issue${issueNumber}-${sanitizedLowercaseIssueTitle}",
+        "githubIssues.workingBaseBranch": "defaultBranch",
+        "githubPullRequests.createDefaultBaseBranch": "createdFromBranch",
+        "githubPullRequests.createOnPublishBranch": "always"
+      }
     }
   }
 }
