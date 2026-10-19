@@ -2,7 +2,8 @@
 # © 2026 Hannes Stauss (scalarion@nimblescape.com)
 # Licensed under the MIT License. See LICENSE in the repository root for details.
 
-# devcontainer-dev: the base image plus the GitHub CLI.
+# devcontainer-dev: the base image plus the GitHub CLI, the native libraries
+# of the Playwright browsers and the HTML validator.
 #
 # The layer tool devcon of devcontainer-core installs every layer.
 # Layers and their arguments: https://github.com/majikmate/devcontainer-core/blob/main/docs/layers.md
@@ -12,3 +13,12 @@ FROM ghcr.io/majikmate/devcontainer-base:2
 # release workflow passes the newest version
 ARG GITHUB_CLI_VERSION
 RUN devcon install github-cli
+
+# playwright-deps: system libraries of the Playwright browsers (the projects
+# install the browsers themselves)
+ARG PLAYWRIGHT_BROWSERS="chromium firefox webkit"
+RUN devcon install playwright-deps
+
+# html-validate: VS Code extension HTML-validate (offline HTML5 validator) and
+# the global configuration /.htmlvalidate.json, which fits Prettier
+RUN devcon install html-validate
